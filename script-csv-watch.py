@@ -59,7 +59,7 @@ for i in range (0, len(rooms)):
         #day.to_csv(f"data-exported/{retrieve_name(day)}.csv", sep=',', encoding='utf-8', index=False)
         dfDayRoom = day[day["room"].str.contains(str(room_numbers[i]))]
         if(len(dfDayRoom) != 0):
-            fileName = str(room_numbers[i]) + "-" + retrieve_name(day).lstrip("d").replace("_", "-")
+            fileName = str(room_numbers[i]) + "_" + retrieve_name(day).lstrip("d").replace("_", "-")
             dfDayRoom.to_csv(f"data-exported/{fileName}.csv", sep=',', encoding='utf-8', index=False)
             print(f"{fileName}.csv", "exported successfully")
         else:
