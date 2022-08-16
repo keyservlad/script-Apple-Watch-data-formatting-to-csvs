@@ -17,7 +17,8 @@ def retrieve_name(var):
 # 1 csv par jour pour toutes les rooms
 # room_number, type (hr, pedo, location) (device_cid) (check s'il y en a d'autres), value, time (phenomenonTime)
 
-room_numbers = [1014, 1026, 2002, 2008, 2011, 2018, 2030, 4008]
+# room_numbers = [1014, 1026, 2002, 2008, 2011, 2018, 2030, 4008]
+room_numbers = [1014, 2011, 2030]
 rooms = []
 
 for number in room_numbers:
@@ -31,7 +32,7 @@ df = pd.concat(rooms) # merge the csvs
 
 df["device_cid"] = df["device_cid"].str.split("/").str.get(-1) # modify values to get only the type
 
-del df["_id"], df["_index"], df["_score"], df["_type"], df["id"], df["resultTime"] # del unused cols
+del df["_id"], df["_index"], df["_score"], df["_type"], df["id"], df["resultTime"], df["result.valueText"] # del unused cols
 
 df.rename(columns={'device_cid': 'type', 'phenomenonTime.instant': 'time', 'result.valueLocationGps': 'valueLocationGps', 'result.valueNumeric': 'valueNumeric'}, inplace=True) # rename cols
 df.index.name = 'id'
@@ -46,8 +47,16 @@ d2022_06_10 = df[df["time"].str.contains("Jun 10")]
 d2022_06_11 = df[df["time"].str.contains("Jun 11")]
 d2022_06_12 = df[df["time"].str.contains("Jun 12")]
 d2022_06_13 = df[df["time"].str.contains("Jun 13")]
+d2022_06_14 = df[df["time"].str.contains("Jun 14")]
+d2022_06_15 = df[df["time"].str.contains("Jun 15")]
+d2022_06_16 = df[df["time"].str.contains("Jun 16")]
+d2022_06_17 = df[df["time"].str.contains("Jun 17")]
+d2022_06_18 = df[df["time"].str.contains("Jun 18")]
+d2022_06_19 = df[df["time"].str.contains("Jun 19")]
+d2022_06_20 = df[df["time"].str.contains("Jun 20")]
+d2022_06_21 = df[df["time"].str.contains("Jun 21")]
 
-days = [d2022_06_09, d2022_06_10, d2022_06_11, d2022_06_12, d2022_06_13]
+days = [d2022_06_16, d2022_06_17, d2022_06_18, d2022_06_19, d2022_06_20]
 daysLength = sum(map(len, days))
 
 # test that the amount of rows is the same as the beginning
@@ -58,8 +67,8 @@ for i in range (0, len(rooms)):
     for day in days:
         #day.to_csv(f"data-exported/{retrieve_name(day)}.csv", sep=',', encoding='utf-8', index=False)
         dfDayRoom = day[day["room"].str.contains(str(room_numbers[i]))]
+        fileName = str(room_numbers[i]) + "_" + retrieve_name(day).lstrip("d").replace("_", "-")
         if(len(dfDayRoom) != 0):
-            fileName = str(room_numbers[i]) + "_" + retrieve_name(day).lstrip("d").replace("_", "-")
             dfDayRoom.to_csv(f"data-exported/{fileName}.csv", sep=',', encoding='utf-8', index=False)
             print(f"{fileName}.csv", "exported successfully")
         else:
@@ -67,8 +76,9 @@ for i in range (0, len(rooms)):
 
 #df.to_csv("data-exported/all_data.csv", sep=',', encoding='utf-8', index=False)
 #print('all_data.csv exported')
-print(df.head(2))
 
+print(df.tail(2))
+print(df.head(2))
 
 
 
